@@ -44,3 +44,9 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+### How file is saved to IPFS?
+- Upload file
+- Change type to Node.js buffer module (binary data)
+- We'll use FileReader object to read data buffer stored on user's computer

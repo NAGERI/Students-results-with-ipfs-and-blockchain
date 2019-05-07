@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3";
+import ipfs from "./ipfs";
 
 import "./App.css";
 
 class App extends Component {
-  state = { storageValue: 0, web3: null, accounts: null, contract: null };
+  state = {
+    storageValue: 0,
+    web3: null,
+    accounts: null,
+    contract: null,
+    buffer: null,
+    ipfsHash: ""
+  };
 
   componentDidMount = async () => {
     try {
@@ -48,23 +56,49 @@ class App extends Component {
     this.setState({ storageValue: response });
   };
 
+  // we get the file and convert it to format that IPFS can understand
+  captureFile = (event) => {
+    event.preventDefault()
+    const file = event.target.files[0];
+    const reader = new window.FileReader();
+    reader.readAsArrayBuffer(file);
+    reader.onloadend = () => {
+      // get array of data that we can pass to the buffer
+      // this gives us a format that we can post to IPFS
+      this.setState({ buffer: Buffer(reader.result) });
+      console.log("buffer", this.state.buffer);
+    }
+
+  }
+
+  // here we want to add the buffer file ti IPFS
+  onSubmit = (event) => {
+    event.preventDefault();
+    ipfs.files.add(this.state.buffer, (error, result) => {
+      if(error) {
+        console.log(error);
+        return
+      }
+      this.setState({ ipfsHash: result[0].hash });
+      console.log("ipfsHash", this.state.ipfsHash);
+    });
+    
+  }
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
       <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
+        <h1>IPFS File Upload DApp!</h1>
+        <p>Your file is stored on IPFS and the Ethereum blockchain.</p>
+        <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt=""/>
+        <h2>Upload File</h2>
+        <form onSubmit={this.onSubmit}>
+         <input type="file" onChange={this.captureFile}/>
+         <input type="submit" />
+        </form>
       </div>
     );
   }
