@@ -1,0 +1,45 @@
+body {
+  background: linear-gradient(90deg, #ADA996, #F2F2F2, #DBDBDB, #EAEAEA) 
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.modal-content {
+	background-color: #434e5a;
+	opacity: .8;
+  padding: 0 18px;
+  align-content: center;
+}
+
+.modal-content h1 {
+  color: orange;
+}
+
+.modal-content h2, .modal-content p, .modal-content input {
+  color: #fff
+}
+
+ .imageCaption {
+  font-size: 25px;
+  color: black;
+}
+
+.btn-success {
+	background-color: #1c6288;
+	font-size: 19px;
+	border-radius: 5px;
+	padding: 7px 14px;
+	border: 1px solid #daf1ff;
+}
+
+.form-group .btn-warning {
+  align-self: center;
+  margin-left: 150px;
+  margin-right: 0px;
+}
