@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
 import getWeb3 from "./utils/getWeb3"; // web3 helps ur client side app talk to the Blockchain
 import ipfs from "./ipfs";
+import TopNav from "./components/TopNav";
 
 import "./App.css";
 
@@ -42,7 +43,7 @@ class App extends Component {
     }
   };
 
-  
+
   // we get the file and convert it to format that IPFS can understand
   captureFile = (event) => {
     event.preventDefault()
@@ -72,38 +73,39 @@ class App extends Component {
     });
   }
 
+  renderForm = () => {
+    return (
+      <div className="card">
+        <div className="card-header">
+          Verify Student Transcript
+          </div>
+        <div className="card-body">
+          <h5 className="card-title">Special title treatment</h5>
+          {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" /> */}
+          <form onSubmit={this.onSubmit}>
+            <div className="form-group">
+              <input type="file" onChange={this.captureFile} />
+            </div>
+            <div className="form-group">
+              <input className="btn btn-primary" type="submit" />
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     if (!this.state.web3) {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div className="App">
-        <nav className="navbar pure-menu pure-menu-horizontal">
-          <a href="#" className="pure-menu-heading pure-menu-link">IPFS File Upload DApp</a>
-        </nav>
+      <div role="main" className="App col-md-9 col-lg-10 px-4">
+        <TopNav />
+        {this.renderForm()}
 
-        <main className="container">
-          <div className="modal-dialog text-center">
-            <div className="modal-content">
-              <h1>IPFS File Upload</h1>
-              <p>File is hashed by IPFS and stored on the Ethereum blockchain.</p>
-              {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" /> */}
-              <h2>Upload File</h2>
-              <div className="col-12 form-input">
-                <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <input className="btn btn-warning" type="file" onChange={this.captureFile} />
-                  </div>
-                  <div className="form-group">
-                    <input className="btn btn-success" type="submit" />
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" />
-          <p className="imageCaption">{this.state.hashedPDF}</p>
-        </main>
+        <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" />
+        <p className="imageCaption">{this.state.hashedPDF}</p>
       </div>
     );
   }

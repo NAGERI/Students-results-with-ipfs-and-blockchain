@@ -3,6 +3,7 @@ body {
 }
 .App {
   text-align: center;
+  margin-top: 3%;
 }
 
 .App-logo {
@@ -28,14 +29,6 @@ body {
  .imageCaption {
   font-size: 25px;
   color: black;
-}
-
-.btn-success {
-	background-color: #1c6288;
-	font-size: 19px;
-	border-radius: 5px;
-	padding: 7px 14px;
-	border: 1px solid #daf1ff;
 }
 
 .form-group .btn-warning {
