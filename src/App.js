@@ -60,8 +60,7 @@ class App extends Component {
   }
 
   // here we want to add the buffer file ti IPFS
-  onSubmit = (event) => {
-    event.preventDefault();
+  onSubmit = () => {
     ipfs.files.add(this.state.buffer, (error, result) => {
       if (error) {
         console.log(error);
@@ -73,26 +72,50 @@ class App extends Component {
     });
   }
 
+  renderUni = () => {
+    return (
+      <div className="card text-center">
+        <div className="card-body">
+          <img src={require('./components/maklogo.jpeg')} alt="" />
+        </div>
+      </div>
+
+    );
+  }
+
   renderForm = () => {
     return (
       <div className="card">
         <div className="card-header">
-          Verify Student Transcript
-          </div>
+          <h5 className="card-title">Upload a file below to verify</h5>
+        </div>
         <div className="card-body">
-          <h5 className="card-title">Special title treatment</h5>
-          {/* <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" /> */}
-          <form onSubmit={this.onSubmit}>
-            <div className="form-group">
-              <input type="file" onChange={this.captureFile} />
-            </div>
-            <div className="form-group">
-              <input className="btn btn-primary" type="submit" />
-            </div>
-          </form>
+          <img src={require('./components/done2.png')} alt="" />
+          <div className="form-group">
+            <input type="file" onChange={this.captureFile} />
+          </div>
+          <div className="form-group">
+            <button className="btn btn-success" onClick={this.onSubmit()}>Verify Transcript</button>
+          </div>
         </div>
       </div>
     );
+  }
+
+  renderVerified = () => {
+    return (
+      <div className="card vrified">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item1"><h6>Transcript uploaded:</h6> <i className="fa fa-arrow-up"></i> <p className="uploadedHash">{this.state.ipfsHash}</p></li>
+          <li className="list-group-item1"><h6>Transcript in System:</h6> <i className="fa fa-arrow-down"></i> <p className="returnedHash">{this.state.ipfsHash}</p></li>
+        </ul>
+        <div className="card-body">
+          <h5 className="card-title"><i className="fa fa-check"></i>Transcript is Authentic... <i className="fa fa-thumbs-o-up"></i></h5>
+          <p className="card-text">The ID of the uploaded transcript matches that of the original transcript stored in the system. Below are the details of the student.</p>
+        </div>
+        <img className="card-img-top" src={require("./components/trans.png")} alt="Card image cap" />
+      </div>
+    )
   }
 
   render() {
@@ -100,12 +123,27 @@ class App extends Component {
       return <div>Loading Web3, accounts, and contract...</div>;
     }
     return (
-      <div role="main" className="App col-md-9 col-lg-10 px-4">
-        <TopNav />
-        {this.renderForm()}
+      <div className="tops">
+        {this.renderUni()}
+        <div className="row">
+          <TopNav />
 
-        <img src={`https://ipfs.io/ipfs/${this.state.ipfsHash}`} alt="" />
-        <p className="imageCaption">{this.state.hashedPDF}</p>
+          <div role="main" className="App col left">
+            {this.renderForm()}
+            <div className="card">
+              <div className="card-header">
+                <p>You may also access the transcript online using the link below: <i className="fa fa-link"></i></p>
+              </div>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item"><p className="imageCaption">{this.state.hashedPDF}</p></li>
+              </ul>
+            </div>
+            
+          </div>
+          <div className="col right load-results">
+            {this.renderVerified()}
+          </div>
+        </div>
       </div>
     );
   }
